@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+    tools{
+        maven 'mymaven'
+    }  
+    stages {
+        stage('CleanWS') {
+            steps {
+                echo 'cleanWS()'
+            }
+        }
+        stage("code"){
+            steps{
+                 git "https://github.com/devops0014/dockerwebapp.git"
+            }
+        }
+        stage("CQA"){
+            steps{
+                 withSonarQubeEnv('mysonar') {
+                      sh "mvn clean verify sonar:sonar -Dsonar.projectKey=project"
+                }
+            }
+        }
+        stage("codebuild"){
+            steps{
+                sh 'mvn clean package'
+                sh 'cp -r target Docker-app'
+            }
+        }
+        stage("OWASP"){
+            steps{
+              dependencyCheck additionalArguments: '', nvdCredentialsId: '429ed72f-eb6e-45cb-b8bb-537b5ea52f64', odcInstallation: 'my-dp'
+              dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+        stage("Artifact"){
+            steps{
+                s3Upload consoleLogLevel: 'INFO', dontSetBuildResultOnFailure: false, dontWaitForConcurrentBuildCompletion: false, entries: [[bucket: 'amazn-s3-bucket-ksn', excludedFile: '', flatten: false, gzipFiles: false, keepForever: false, managedArtifacts: false, noUploadOnFailure: true, selectedRegion: 'us-east-1', showDirectlyInBrowser: false, sourceFile: 'target/vprofile-v2.war', storageClass: 'STANDARD', uploadFromSlave: false, useServerSideEncryption: false]], pluginFailureResultConstraint: 'FAILURE', profileName: 'amazn-s3-bucket-ksn', userMetadata: []            }
+        }
+        stage("ImageBuild"){
+            steps{
+                sh 'docker build -t appimage Docker-app'
+                sh 'docker build -t dbimage Docker-db'
+            }
+        }
+        stage("Trivyscan"){
+            steps{
+                sh 'trivy image appimage'
+                sh 'trivy image dbimage'
+            }
+        }
+        stage("Tag&push"){
+            steps{
+                script{
+                withDockerRegistry(credentialsId: 'dockerhub') {
+                sh 'docker tag appimage sravanik93/terraformproject:app'
+                sh 'docker tag dbimage sravanik93/terraformproject:db'
+                sh 'docker push sravanik93/terraformproject:app'
+                sh 'docker push sravanik93/terraformproject:db'
+              }
+           }
+        }
+        }
+        stage("deploy"){
+            steps{
+                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat', path: '', url: 'http://44.192.31.210:8080')], contextPath: 'myapp', war: 'target/vprofile-v2.war'
+            }
+        }
+     }
+  }
