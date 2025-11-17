@@ -14,10 +14,11 @@ Key Technologies:
 - **Deployment:** Tomcat 9
 
 ## Screenshots
-<img width="1920" height="1080" alt="tomcat-home" src="https://github.com/user-attachments/assets/a77f9690-aad5-4a39-97b4-d1b3dfcfaeb1" />
-<img width="1900" height="802" alt="Full-deploy" src="https://github.com/user-attachments/assets/4e0fe333-df4b-46c1-846c-f4bb3f77f9bb" />
-<img width="1904" height="876" alt="dockerhub-images" src="https://github.com/user-attachments/assets/e61806d4-42b5-4bea-ba3c-c2bb8e305671" />
-<img width="1920" height="872" alt="live-page" src="https://github.com/user-attachments/assets/e30c6493-3c1c-4d34-90fc-702e10520dc9" />
+<img width="1900" height="802" alt="Full-deploy" src="https://github.com/user-attachments/assets/19315bed-9808-4707-9200-f108f76d22b0" />
+<img width="1904" height="876" alt="dockerhub-images" src="https://github.com/user-attachments/assets/6f729eab-3ff4-4ef6-a0c2-a2ab5e82396c" />
+<img width="1920" height="1080" alt="tomcat-home" src="https://github.com/user-attachments/assets/b6f9b29f-855b-47c4-aa98-98aa7b6f7442" />
+<img width="1920" height="872" alt="live-page" src="https://github.com/user-attachments/assets/b08e3035-c4fd-4a8a-8743-1da7b339cfff" />
+
 
 
 ## Setup Instructions
