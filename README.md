@@ -21,7 +21,7 @@ Key Technologies:
 
 
 ## Setup Instructions
-1. Clone the repo: `git clone https://github.com/yourusername/my-devops-cicd-project.git`
+1. Clone the repo: `[git clone https://github.com/Sravanikethari/teraform-project.git)]`
 2. Install dependencies (Maven, Docker, Terraform).
 3. Set up Jenkins with required plugins (e.g., SonarQube, OWASP, S3).
 4. Configure credentials (use Jenkins Credentials for secrets).
